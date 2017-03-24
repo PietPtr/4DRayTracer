@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1490299600 source:/home/daan/projects/4DRayTracer/4DRayTracer/src/main.cpp
+	<iostream>
+
+1490297971 source:/home/daan/projects/4DRayTracer/4DRayTracer/src/Vector4D.cpp
+	"Vector4D.h"
+	<math.h>
+
+1490297823 /home/daan/projects/4DRayTracer/4DRayTracer/include/Vector4D.h
+
