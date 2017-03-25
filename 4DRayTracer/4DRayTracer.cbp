@@ -36,9 +36,18 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="../libraries/SFML-2.4.2/include" />
 		</Compiler>
+		<Linker>
+			<Add library="sfml-graphics" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
+			<Add directory="../libraries/SFML-2.4.2/lib" />
+		</Linker>
+		<Unit filename="include/Triangle3D.h" />
 		<Unit filename="include/Triangle4D.h" />
 		<Unit filename="include/Vector4D.h" />
+		<Unit filename="src/Triangle3D.cpp" />
 		<Unit filename="src/Triangle4D.cpp" />
 		<Unit filename="src/Vector4D.cpp" />
 		<Unit filename="src/main.cpp" />

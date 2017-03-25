@@ -1,6 +1,6 @@
 #ifndef TRIANGLE4D_H
 #define TRIANGLE4D_H
-
+#include "Vector4D.h"
 
 class Triangle4D
 {

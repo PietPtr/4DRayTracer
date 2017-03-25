@@ -6,6 +6,7 @@ class Vector4D
 {
     public:
         Vector4D(float, float, float, float);
+        Vector4D();
         virtual ~Vector4D();
 
         float x, y, z, a;
