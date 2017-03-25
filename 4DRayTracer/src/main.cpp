@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <stdlib.h>
 
 using namespace sf;
 
@@ -14,9 +15,9 @@ using namespace sf;
 const int DIM = 100;
 
 std::vector<Triangle3D> pointsToTriangles(std::array<Color, DIM*DIM*DIM> points);
-std::string buildOBJFile(std::vector<Triangle3D>* triangles);
-void writeOBJ(std::string obj, std::string file);
+void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file);
 std::string vectorToOBJString(Vector3f v);
+Vector3i indexToCoords(int index);
 
 int main(int argc, char* argv[]) {
 
@@ -33,28 +34,27 @@ int main(int argc, char* argv[]) {
 
 
     //Dummy data
-    /*
     std::array<Color, DIM*DIM*DIM> points;
+    ///*
     for (int i = 0; i < DIM*DIM*DIM; i++)
     {
         points[i] = Color(0, 0, 0, 0);
+
+        Vector3i coords = indexToCoords(i);
+
+        if (coords.z - 20 < cos(coords.x / 10.0) * 5.0 * sin(coords.y / 10.0) * 5.0)
+        {
+            points[i] = Color(255, 255, 255, 255);
+        }
     }
+    //*/
     points[0] = Color(255, 255, 255, 255);
-    points[2] = Color(255, 255, 255, 255);
-    points[200] = Color(255, 255, 255, 255);
-    points[202] = Color(255, 255, 255, 255);
-    points[20000] = Color(255, 255, 255, 255);
-    */
 
     // Convert result to list of triangles. std::vector<Triangle3D>
     std::vector<Triangle3D> triangles = pointsToTriangles(points);
 
     // Build obj model.
-    std::string obj = buildOBJFile(&triangles);
-
-    // Write obj model
-    writeOBJ(obj, "test2.obj");
-
+    buildOBJFile(&triangles, "test3.obj");
 
     return 0;
 }
@@ -69,6 +69,17 @@ Vector3i indexToCoords(int index)
     //std::cout << "x: " << coords.x << ", y: " << coords.y << ", z: " << coords.z << "\n";
 
     return coords;
+}
+
+int coordsToIndex(Vector3i coords)
+{
+    int index = 0;
+
+    index += coords.x;
+    index += coords.y * DIM;
+    index += coords.z * DIM * DIM;
+
+    return index;
 }
 
 std::vector<Triangle3D> pointsToTriangles(std::array<Color, DIM*DIM*DIM> points)
@@ -87,6 +98,21 @@ std::vector<Triangle3D> pointsToTriangles(std::array<Color, DIM*DIM*DIM> points)
         {
             continue;
         }
+
+        if (!(posx == DIM-1 || posy == DIM-1 || posz == DIM-1 || posx == 0 || posy == 0 || posz == 0))
+        {
+            if ((points[coordsToIndex(Vector3i(posx+1, posy, posz))].a != 0 &&
+                 points[coordsToIndex(Vector3i(posx-1, posy, posz))].a != 0 &&
+                 points[coordsToIndex(Vector3i(posx, posy+1, posz))].a != 0 &&
+                 points[coordsToIndex(Vector3i(posx, posy-1, posz))].a != 0 &&
+                 points[coordsToIndex(Vector3i(posx, posy, posz+1))].a != 0 &&
+                 points[coordsToIndex(Vector3i(posx, posy, posz-1))].a != 0))
+            {
+                continue;
+            }
+        }
+
+
 
         std::array<Vector3f, 8> vertices;
 
@@ -145,41 +171,39 @@ std::string vectorToOBJString(Vector3f v)
     return vertex;
 }
 
-std::string buildOBJFile(std::vector<Triangle3D>* triangles)
+void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file)
 {
     std::cout << "Building .OBJ file...\n";
     std::string vertices = "";
     std::string faces = "";
 
+    std::ofstream out(file);
+
     for (int i = 0; i < triangles->size(); i++)
     {
+        if (i % 10000 == 0)
+        {
+            std::cout << "  Built " << ((float)i / triangles->size()) * 100.0 << "%\n";
+        }
         std::string vertex1 = vectorToOBJString(triangles->at(i).v1);
         vertices += vertex1 + "\n";
+        out << vertex1 << "\n";
 
         std::string vertex2 = vectorToOBJString(triangles->at(i).v2);
         vertices += vertex2 + "\n";
+        out << vertex2 << "\n";
 
         std::string vertex3 = vectorToOBJString(triangles->at(i).v3);
         vertices += vertex3 + "\n";
+        out << vertex3 << "\n";
 
         std::string face = "f ";
         face += std::to_string(i*3 + 1) + " ";
         face += std::to_string(i*3 + 2) + " ";
         face += std::to_string(i*3 + 3) + " ";
 
-        faces += face + "\n";
+        out << face << "\n";
     }
-
-    return vertices + "\n" + faces;
 }
-
-void writeOBJ(std::string obj, std::string file)
-{
-    std::cout << "Writing .OBJ file to file system...\n";
-    std::ofstream out(file);
-    out << obj;
-    out.close();
-}
-
 
 
