@@ -6,6 +6,8 @@
 #include <string>
 #include <iostream>
 #include <stdlib.h>
+#include "Triangle4D.h"
+#include "TriangleTree.h"
 
 using namespace sf;
 
@@ -27,7 +29,31 @@ int main(int argc, char* argv[]) {
     // Convert to triangles.
 
 
+
+
+    // random triangles generate a test tree:
+    std::vector<Triangle4D> test_triangles;
+
+    for (int x = 0; x < 10; x++) {
+        for (int y = 0; y < 10; y++) {
+            for (int z = 0; z < 10; z++) {
+                for (int a = 0; a < 10; a++) {
+                    Vector4D v1 = Vector4D((float)x, (float)y, (float)z, (float)a);
+                    Vector4D v2 = Vector4D((float)x, (float)y + 0.5, (float)z + 0.5, (float)a + 0.5);
+                    Vector4D v3 = Vector4D((float)x, (float)y + 0.5, (float)z, (float)a);
+
+                    Triangle4D triangle = Triangle4D(v1, v2, v3);
+                    test_triangles.push_back(triangle);
+                }
+            }
+        }
+    }
+    std::cout << "Finished generating random triangles" << std::endl;
+
+
     // Build triangle tree. std::vector<Triangle4D>.
+    TriangleTree tree = TriangleTree();
+    tree.setValues(test_triangles);
 
 
     // Raytrace triangles to 3d array. Returns std::array<Color, 1000000>
