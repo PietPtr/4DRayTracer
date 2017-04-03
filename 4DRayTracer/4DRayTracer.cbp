@@ -14,10 +14,12 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
+					<Add option="-Wl,-R /home/daan/projects/4DRayTracer/libraries/SFML-2.4.2/lib" />
 					<Add directory="../libraries/SFML-2.4.2/include" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
+					<Add option="-Wl,-R ." />
 					<Add library="sfml-graphics-d" />
 					<Add library="sfml-system-d" />
 					<Add library="sfml-window-d" />
@@ -36,6 +38,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-Wl,-R ." />
 				</Linker>
 			</Target>
 		</Build>
