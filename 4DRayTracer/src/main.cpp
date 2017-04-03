@@ -21,7 +21,7 @@ void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file);
 std::string vectorToOBJString(Vector3f v);
 Vector3i indexToCoords(int index);
 
-int main(int argc, char* argv[]) {
+int main() {
 
     // Load 4d model.
 
@@ -32,15 +32,16 @@ int main(int argc, char* argv[]) {
 
 
     // random triangles generate a test tree:
-    std::vector<Triangle4D> test_triangles;
+    std::vector<Triangle4D> test_triangles = std::vector<Triangle4D>(0);
 
     for (int x = 0; x < 10; x++) {
         for (int y = 0; y < 10; y++) {
             for (int z = 0; z < 10; z++) {
-                for (int a = 0; a < 10; a++) {
+                for (int a = 0; a < 1; a++) {
                     Vector4D v1 = Vector4D((float)x, (float)y, (float)z, (float)a);
                     Vector4D v2 = Vector4D((float)x, (float)y + 0.5, (float)z + 0.5, (float)a + 0.5);
                     Vector4D v3 = Vector4D((float)x, (float)y + 0.5, (float)z, (float)a);
+                    //std::cout << v1.x;
 
                     Triangle4D triangle = Triangle4D(v1, v2, v3);
                     test_triangles.push_back(triangle);
@@ -48,20 +49,27 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-    std::cout << "Finished generating random triangles" << std::endl;
+    std::vector<Triangle4D*> reference_triangles(test_triangles.size());
+    for (int i = 0; i < test_triangles.size(); i++) {
+        reference_triangles[i] = &test_triangles[i];
+    }
+    //std::cout << "Finished generating random triangles" << std::endl;
 
 
     // Build triangle tree. std::vector<Triangle4D>.
     TriangleTree tree = TriangleTree();
-    tree.setValues(test_triangles);
+    tree.setValues(reference_triangles);
+    std::cout << "Finished generating random triangles" << std::endl;
+    //while (true) {}
 
 
     // Raytrace triangles to 3d array. Returns std::array<Color, 1000000>
 
 
     //Dummy data
+
     std::array<Color, DIM*DIM*DIM> points;
-    ///*
+
     for (int i = 0; i < DIM*DIM*DIM; i++)
     {
         points[i] = Color(0, 0, 0, 0);
@@ -73,7 +81,7 @@ int main(int argc, char* argv[]) {
             points[i] = Color(255, 255, 255, 255);
         }
     }
-    //*/
+
     points[0] = Color(255, 255, 255, 255);
 
     // Convert result to list of triangles. std::vector<Triangle3D>

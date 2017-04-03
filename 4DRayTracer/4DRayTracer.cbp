@@ -21,7 +21,7 @@
 					<Add library="sfml-graphics-d" />
 					<Add library="sfml-system-d" />
 					<Add library="sfml-window-d" />
-					<Add directory="/home/daan/projects/4DRayTracer/libraries/SFML-2.4.2/lib" />
+					<Add directory="../libraries/SFML-2.4.2/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -31,6 +31,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>

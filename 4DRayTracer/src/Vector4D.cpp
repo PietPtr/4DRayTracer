@@ -30,3 +30,7 @@ float Vector4D::dotProduct(Vector4D vec)
 float Vector4D::length() {
     return sqrt(x * x + y * y + z * z + a * a);
 }
+
+bool Vector4D::equals(Vector4D* other) {
+    return (x == other->x && y == other->y && z == other->z && a == other->a);
+}

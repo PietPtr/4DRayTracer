@@ -14,6 +14,9 @@ class Vector4D
         float dotProduct(Vector4D);
 
         float length();
+
+        bool equals(Vector4D*);
+
     protected:
     private:
 };
