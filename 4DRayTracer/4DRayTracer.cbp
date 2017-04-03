@@ -14,7 +14,6 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />
-					<Add option="-Wl,-R /home/daan/projects/4DRayTracer/libraries/SFML-2.4.2/lib" />
 					<Add directory="../libraries/SFML-2.4.2/include" />
 					<Add directory="include" />
 				</Compiler>
