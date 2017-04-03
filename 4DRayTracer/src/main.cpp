@@ -16,7 +16,7 @@ using namespace sf;
 // Size of all 3 Dimensions of screen
 const int DIM = 100;
 
-std::vector<Triangle3D> pointsToTriangles(std::array<Color, DIM*DIM*DIM> points);
+std::vector<Triangle3D> pointsToTriangles(std::vector<Color> points);
 void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file);
 std::string vectorToOBJString(Vector3f v);
 Vector3i indexToCoords(int index);
@@ -67,18 +67,17 @@ int main() {
 
 
     //Dummy data
-
-    std::array<Color, DIM*DIM*DIM> points;
+    std::vector<Color> points;
 
     for (int i = 0; i < DIM*DIM*DIM; i++)
     {
-        points[i] = Color(0, 0, 0, 0);
+        points.push_back(Color(0, 0, +0, 0));
 
         Vector3i coords = indexToCoords(i);
 
-        if (coords.z - 20 < cos(coords.x / 10.0) * 5.0 * sin(coords.y / 10.0) * 5.0)
+        if (random() % 2 == 1)//(coords.z - 0 < tan(coords.x / 5.0) * 5.0 * sin(coords.y / 5.0) * 5.0 + coords.x / 5.0 + coords.y / 5.0)
         {
-            points[i] = Color(255, 255, 255, 255);
+
         }
     }
 
@@ -116,7 +115,7 @@ int coordsToIndex(Vector3i coords)
     return index;
 }
 
-std::vector<Triangle3D> pointsToTriangles(std::array<Color, DIM*DIM*DIM> points)
+std::vector<Triangle3D> pointsToTriangles(std::vector<Color> points)
 {
     std::cout << "Converting point array to triangles...\n";
     std::vector<Triangle3D> triangles;
@@ -188,8 +187,6 @@ std::vector<Triangle3D> pointsToTriangles(std::array<Color, DIM*DIM*DIM> points)
             triangles.push_back(top1);
             triangles.push_back(top2);
         }
-
-        // generate 2 bottom triangles
     }
 
     return triangles;
@@ -215,7 +212,7 @@ void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file)
 
     for (int i = 0; i < triangles->size(); i++)
     {
-        if (i % 10000 == 0)
+        if (i % 100000 == 0)
         {
             std::cout << "  Built " << ((float)i / triangles->size()) * 100.0 << "%\n";
         }
