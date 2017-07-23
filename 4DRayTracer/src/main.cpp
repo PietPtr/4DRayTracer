@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include "Triangle3D.h"
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <string>
 #include <iostream>
 #include <stdlib.h>
+#include <fstream>
 #include "Triangle4D.h"
 #include "TriangleTree.h"
 
@@ -16,20 +18,19 @@ using namespace sf;
 // Size of all 3 Dimensions of screen
 const int DIM = 100;
 
+/* PREDEFINITIONS */
 std::vector<Triangle3D> pointsToTriangles(std::vector<Color> points);
 void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file);
 std::string vectorToOBJString(Vector3f v);
 Vector3i indexToCoords(int index);
+std::vector<Triangle4D> load4DModel(std::string filename);
+std::array<float, 4> getVertexValues(std::string line);
+std::array<int, 3> getFaceValues(std::string line);
 
 int main() {
 
     // Load 4d model.
-
-
-    // Convert to triangles.
-
-
-
+    std::vector<Triangle4D> triangles = load4DModel("test.4bj");
 
     // random triangles generate a test tree:
     std::vector<Triangle4D> test_triangles = std::vector<Triangle4D>(0);
@@ -63,7 +64,7 @@ int main() {
     //while (true) {}
 
 
-    // Raytrace triangles to 3d array. Returns std::array<Color, 1000000>
+    // Raytrace triangles to 3d array. +Returns std::array<Color, 1000000>
 
 
     //Dummy data
@@ -71,7 +72,7 @@ int main() {
 
     for (int i = 0; i < DIM*DIM*DIM; i++)
     {
-        points.push_back(Color(0, 0, +0, 0));
+        points.push_back(Color(0, 0, 0, 0));
 
         Vector3i coords = indexToCoords(i);
 
@@ -84,12 +85,85 @@ int main() {
     points[0] = Color(255, 255, 255, 255);
 
     // Convert result to list of triangles. std::vector<Triangle3D>
-    std::vector<Triangle3D> triangles = pointsToTriangles(points);
+    std::vector<Triangle3D> triangles3D = pointsToTriangles(points);
 
     // Build obj model.
-    buildOBJFile(&triangles, "test3.obj");
+    buildOBJFile(&triangles3D, "test3.obj");
 
     return 0;
+}
+
+std::vector<Triangle4D> load4DModel(std::string filename)
+{
+    std::string line;
+    std::ifstream file("test.4bj");
+    std::vector<Vector4D> vertices;
+    std::vector<Triangle4D> triangles;
+
+    if (file.is_open()) {
+        while (getline(file, line)) {
+            std::cout << line << '\n';
+            if (line[0] == 'v') {
+                std::array<float, 4> values = getVertexValues(line);
+                Vector4D vertex = Vector4D(values[0], values[1], values[2], values[3]);
+                vertices.push_back(vertex);
+
+                std::cout << "  -> vertex\n";
+            }
+            if (line[0] == 'f') {
+                std::array<int, 3> values = getFaceValues(line);
+                Triangle4D triangle = Triangle4D(vertices[values[0]], vertices[values[1]], vertices[values[2]]);
+                triangles.push_back(triangle);
+
+                std::cout << "  -> face\n";
+            }
+        }
+        file.close();
+    }
+
+    return triangles;
+}
+
+std::array<float, 4> getVertexValues(std::string line)
+{
+    std::array<float, 4> values;
+
+    std::string s;
+    std::istringstream iss(line);
+    int counter = -1;
+    while (getline(iss, s, ' ')) {
+        if (counter == -1) {
+            counter++;
+            continue;
+        }
+
+        values[counter] = std::stof(s);
+
+        counter++;
+    }
+
+    return values;
+}
+
+std::array<int, 3> getFaceValues(std::string line)
+{
+    std::array<int, 3> values;
+
+    std::string s;
+    std::istringstream iss(line);
+    int counter = -1;
+    while (getline(iss, s, ' ')) {
+        if (counter == -1) {
+            counter++;
+            continue;
+        }
+
+        values[counter] = std::stoi(s);
+
+        counter++;
+    }
+
+    return values;
 }
 
 Vector3i indexToCoords(int index)
@@ -236,5 +310,6 @@ void buildOBJFile(std::vector<Triangle3D>* triangles, std::string file)
         out << face << "\n";
     }
 }
+
 
 
