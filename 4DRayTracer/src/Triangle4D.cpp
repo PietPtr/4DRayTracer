@@ -7,12 +7,3 @@ Triangle4D::Triangle4D(Vector4D v1, Vector4D v2, Vector4D v3)
     this->v3 = v3;
     //ctor
 }
-
-Triangle4D::Triangle4D() {
-
-}
-
-Triangle4D::~Triangle4D()
-{
-    //dtor
-}

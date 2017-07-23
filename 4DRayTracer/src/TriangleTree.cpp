@@ -327,7 +327,3 @@ void TriangleTree::setValues(std::vector<Triangle4D*> triangles) {
     childs[0].setValues(part1);
     childs[1].setValues(part2);
 }
-
-TriangleTree::~TriangleTree() {
-    delete [] (childs);
-}
