@@ -7,9 +7,6 @@ class TriangleTree
 {
     public:
         TriangleTree() {};
-
-        ~TriangleTree();
-
         // Calculate the tree.
         void setValues(std::vector<Triangle4D*>);
 
