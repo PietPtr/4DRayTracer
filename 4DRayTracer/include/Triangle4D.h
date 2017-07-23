@@ -6,7 +6,6 @@ class Triangle4D
 {
     public:
         Triangle4D(Vector4D, Vector4D, Vector4D);
-        virtual ~Triangle4D();
 
         Vector4D v1;
         Vector4D v2;
