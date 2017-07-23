@@ -3,7 +3,18 @@
 
 Vector4D::Vector4D(float x, float y, float z, float a)
 {
-    //ctor
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    this->a = a;
+}
+
+Vector4D::Vector4D()
+{
+    x = 0;
+    y = 0;
+    z = 0;
+    a = 0;
 }
 
 Vector4D::~Vector4D()
@@ -18,4 +29,8 @@ float Vector4D::dotProduct(Vector4D vec)
 
 float Vector4D::length() {
     return sqrt(x * x + y * y + z * z + a * a);
+}
+
+bool Vector4D::equals(Vector4D* other) {
+    return (x == other->x && y == other->y && z == other->z && a == other->a);
 }

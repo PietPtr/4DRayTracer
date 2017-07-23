@@ -12,12 +12,17 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
-					<Add directory="../libraries" />
+					<Add directory="../libraries/SFML-2.4.2/include" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add directory="../libraries" />
+					<Add option="-Wl,-R ." />
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-system-d" />
+					<Add library="sfml-window-d" />
+					<Add directory="../libraries/SFML-2.4.2/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -27,24 +32,38 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-Wl,-R ." />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="../libraries/SFML-2.4.2/include" />
 		</Compiler>
+		<Linker>
+			<Add library="sfml-graphics" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
+			<Add directory="../libraries/SFML-2.4.2/lib" />
+		</Linker>
+		<Unit filename="include/Triangle3D.h" />
 		<Unit filename="include/Triangle4D.h" />
+		<Unit filename="include/TriangleTree.h" />
 		<Unit filename="include/Vector4D.h" />
+		<Unit filename="src/Triangle3D.cpp" />
 		<Unit filename="src/Triangle4D.cpp" />
+		<Unit filename="src/TriangleTree.cpp" />
 		<Unit filename="src/Vector4D.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
